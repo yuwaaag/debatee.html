@@ -2,97 +2,106 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind:wght@700&display=swap');
-        body { margin: 0; padding: 0; background: #001a33; font-family: 'Hind', sans-serif; overflow: hidden; touch-action: manipulation; }
+        
+        body { margin: 0; padding: 0; background: #001a33; font-family: 'Hind', sans-serif; overflow: hidden; }
 
+        /* Debate Grid */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
-            gap: 10px;
-            padding: 10px;
-            height: 95vh;
+            gap: 15px;
+            padding: 15px;
+            height: 90vh; /* पट्टी के लिए जगह छोड़ी है */
         }
 
         .guest-box {
             position: relative;
             background: #000;
-            border: 3px solid #ffcc00;
-            border-radius: 8px;
+            border: 4px solid #ffcc00;
+            border-radius: 10px;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* Label / Name Plate */
         .name-tag {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: #cc0000;
+            background: linear-gradient(to right, #cc0000, #800000);
             color: white;
-            padding: 5px 10px;
-            font-size: clamp(14px, 4vw, 22px);
+            padding: 8px 15px;
+            font-size: 24px;
             font-weight: bold;
-            z-index: 10;
+            border-top: 3px solid #ffcc00;
+            text-align: left;
         }
 
-        /* Iframe settings for Mobile */
-        iframe { 
-            width: 100%; 
-            height: 100%; 
-            border: none; 
-            pointer-events: auto;
+        .role-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: #ffcc00;
+            padding: 2px 10px;
+            font-size: 16px;
+            border: 1px solid #ffcc00;
         }
 
-        #start-btn {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); color: #ffcc00;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 100; font-size: 24px; cursor: pointer; text-align: center;
-        }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-    <div id="start-btn" onclick="this.style.display='none'">
-        डिबेट लोड करने के लिए <br> यहाँ टच करें
-    </div>
-
     <div class="grid-container">
         <div class="guest-box">
-            <iframe id="iframe1" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; midi; geolocation;" src=""></iframe>
+            <div class="role-tag">ANCHOR</div>
+            <iframe id="iframe1" src=""></iframe>
             <div class="name-tag" id="n1">एंकर</div>
         </div>
+
         <div class="guest-box">
-            <iframe id="iframe2" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; midi; geolocation;" src=""></iframe>
+            <div class="role-tag">LIVE</div>
+            <iframe id="iframe2" src=""></iframe>
             <div class="name-tag" id="n2">गेस्ट 1</div>
         </div>
+
         <div class="guest-box">
-            <iframe id="iframe3" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; midi; geolocation;" src=""></iframe>
+            <div class="role-tag">LIVE</div>
+            <iframe id="iframe3" src=""></iframe>
             <div class="name-tag" id="n3">गेस्ट 2</div>
         </div>
+
         <div class="guest-box">
-            <iframe id="iframe4" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; midi; geolocation;" src=""></iframe>
+            <div class="role-tag">LIVE</div>
+            <iframe id="iframe4" src=""></iframe>
             <div class="name-tag" id="n4">गेस्ट 3</div>
         </div>
     </div>
 
     <script>
+        // URL से जानकारी लेना: ?n1=Rahul&n2=NetaJi...
         const params = new URLSearchParams(window.location.search);
-        const room = "ApkaNewsChannel"; 
+        const room = "ApkaNewsChannel"; // अपना रूम नाम यहाँ लिखें
         const pw = "Live123";
 
+        // नाम सेट करना
         if(params.get('n1')) document.getElementById('n1').innerText = params.get('n1');
         if(params.get('n2')) document.getElementById('n2').innerText = params.get('n2');
         if(params.get('n3')) document.getElementById('n3').innerText = params.get('n3');
         if(params.get('n4')) document.getElementById('n4').innerText = params.get('n4');
 
-        // "&autoplay=1&mute=0" जोड़ना मोबाइल के लिए बहुत ज़रूरी है
-        document.getElementById('iframe1').src = `https://vdo.ninja/?view=anchor&room=${room}&pw=${pw}&autoplay=1&mute=0&cleanoutput`;
-        document.getElementById('iframe2').src = `https://vdo.ninja/?view=guest1&room=${room}&pw=${pw}&autoplay=1&mute=0&cleanoutput`;
-        document.getElementById('iframe3').src = `https://vdo.ninja/?view=guest2&room=${room}&pw=${pw}&autoplay=1&mute=0&cleanoutput`;
-        document.getElementById('iframe4').src = `https://vdo.ninja/?view=guest3&room=${room}&pw=${pw}&autoplay=1&mute=0&cleanoutput`;
+        // VDO.Ninja वीडियो लोड करना (View Links)
+        document.getElementById('iframe1').src = `https://vdo.ninja/?view=anchor&room=${room}&pw=${pw}&cleanoutput`;
+        document.getElementById('iframe2').src = `https://vdo.ninja/?view=guest1&room=${room}&pw=${pw}&cleanoutput`;
+        document.getElementById('iframe3').src = `https://vdo.ninja/?view=guest2&room=${room}&pw=${pw}&cleanoutput`;
+        document.getElementById('iframe4').src = `https://vdo.ninja/?view=guest3&room=${room}&pw=${pw}&cleanoutput`;
     </script>
 </body>
 </html>
