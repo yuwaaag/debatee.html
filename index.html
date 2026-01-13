@@ -2,29 +2,56 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTN NEWS DEBATE</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; font-family: sans-serif; }
+        body, html { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; font-family: 'Arial', sans-serif; }
         
-        /* 4 Windows का ग्रिड */
-        .container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 100%; height: 100%; gap: 10px; padding: 10px; box-sizing: border-box; }
+        /* 4 Windows Layout */
+        .container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            grid-template-rows: 1fr 1fr; 
+            width: 1920px; 
+            height: 1080px; 
+            gap: 15px; 
+            padding: 15px; 
+            box-sizing: border-box;
+            background: rgba(0,0,0,0.1); /* हल्का सा बैकग्राउंड */
+        }
 
-        .video-box { position: relative; background: #000; border: 4px solid #fff; overflow: hidden; border-radius: 10px; }
+        .video-box { 
+            position: relative; 
+            background: #000; 
+            border: 5px solid #fff; 
+            overflow: hidden; 
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-        /* VDO.Ninja का वीडियो इसी के अंदर रहेगा */
-        <iframe id="box1" src="" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; midi; geolocation;"></iframe>
+        /* VDO.Ninja Iframe - Full Fit */
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block;
+        }
 
-        /* नाम की पट्टी */
+        /* Name Plate Styles */
         .name-tag {
             position: absolute;
-            bottom: 20px;
+            bottom: 30px;
             left: 0;
-            background: linear-gradient(90deg, #ff0000, #b30000);
+            background: linear-gradient(90deg, #e60000, #8b0000);
             color: white;
-            padding: 8px 30px;
-            font-size: 24px;
+            padding: 10px 40px;
+            font-size: 28px;
             font-weight: bold;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
-            border-right: 5px solid #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+            border-right: 6px solid #fff;
+            z-index: 10;
         }
     </style>
 </head>
@@ -32,41 +59,43 @@
 
     <div class="container">
         <div class="video-box">
-            <iframe id="box1" src=""></iframe>
-            <div class="name-tag" id="t1">ANCHOR</div>
+            <iframe id="iframe1" allow="autoplay; camera; microphone; fullscreen; picture-in-picture;"></iframe>
+            <div class="name-tag" id="t1">LOADING...</div>
         </div>
         <div class="video-box">
-            <iframe id="box2" src=""></iframe>
-            <div class="name-tag" id="t2">GUEST 1</div>
+            <iframe id="iframe2" allow="autoplay; camera; microphone; fullscreen; picture-in-picture;"></iframe>
+            <div class="name-tag" id="t2">LOADING...</div>
         </div>
         <div class="video-box">
-            <iframe id="box3" src=""></iframe>
-            <div class="name-tag" id="t3">GUEST 2</div>
+            <iframe id="iframe3" allow="autoplay; camera; microphone; fullscreen; picture-in-picture;"></iframe>
+            <div class="name-tag" id="t3">LOADING...</div>
         </div>
         <div class="video-box">
-            <iframe id="box4" src=""></iframe>
-            <div class="name-tag" id="t4">GUEST 3</div>
+            <iframe id="iframe4" allow="autoplay; camera; microphone; fullscreen; picture-in-picture;"></iframe>
+            <div class="name-tag" id="t4">LOADING...</div>
         </div>
     </div>
 
     <script>
-        // URL से नाम और Room की जानकारी लेना
+        // URL Parameters लेना
         const params = new URLSearchParams(window.location.search);
-        const room = "ApkaNewsChannel"; // आपका Room Name
-        const pw = "Live123"; // आपका Password
+        const roomName = "ApkaNewsChannel";
+        const password = "Live123";
 
-        // सबको उनके बॉक्स में फिट करना
-        function setupBox(id, streamID, defaultName) {
-            const name = params.get(id) || defaultName;
-            document.getElementById('t' + id.slice(1)).innerText = name;
-            // VDO.Ninja का लिंक ऑटो-जेनरेट करना
-            document.getElementById('box' + id.slice(1)).src = `https://vdo.ninja/?view=${streamID}&room=${room}&pw=${pw}&autoplay&cleanoutput&transparent`;
+        function setupFrame(boxNum, pushID, defaultName) {
+            const displayName = params.get('n' + boxNum) || defaultName;
+            document.getElementById('t' + boxNum).innerText = displayName;
+            
+            // VDO.Ninja View Link - Isme 'view' aur 'push' ka milan hai
+            const ninjaURL = `https://vdo.ninja/?view=${pushID}&room=${roomName}&pw=${password}&autoplay&cleanoutput&transparent&cover`;
+            document.getElementById('iframe' + boxNum).src = ninjaURL;
         }
 
-        setupBox('n1', 'n1', 'ANCHOR');
-        setupBox('n2', 'n2', 'NETA JI');
-        setupBox('n3', 'n3', 'OFFICER');
-        setupBox('n4', 'n4', 'GUEST');
+        // 4 डिब्बों को सेट करना
+        setupFrame(1, 'n1', 'ANCHOR');
+        setupFrame(2, 'n2', 'GUEST 1');
+        setupFrame(3, 'n3', 'GUEST 2');
+        setupFrame(4, 'n4', 'GUEST 3');
     </script>
 </body>
 </html>
