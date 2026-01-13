@@ -3,105 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind:wght@700&display=swap');
+        body, html { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; font-family: sans-serif; }
         
-        body { margin: 0; padding: 0; background: #001a33; font-family: 'Hind', sans-serif; overflow: hidden; }
+        /* 4 Windows का ग्रिड */
+        .container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 100%; height: 100%; gap: 10px; padding: 10px; box-sizing: border-box; }
 
-        /* Debate Grid */
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 15px;
-            padding: 15px;
-            height: 90vh; /* पट्टी के लिए जगह छोड़ी है */
-        }
+        .video-box { position: relative; background: #000; border: 4px solid #fff; overflow: hidden; border-radius: 10px; }
 
-        .guest-box {
-            position: relative;
-            background: #000;
-            border: 4px solid #ffcc00;
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        /* VDO.Ninja का वीडियो इसी के अंदर रहेगा */
+        iframe { width: 100%; height: 100%; border: none; }
 
-        /* Label / Name Plate */
+        /* नाम की पट्टी */
         .name-tag {
             position: absolute;
-            bottom: 0;
+            bottom: 20px;
             left: 0;
-            width: 100%;
-            background: linear-gradient(to right, #cc0000, #800000);
+            background: linear-gradient(90deg, #ff0000, #b30000);
             color: white;
-            padding: 8px 15px;
+            padding: 8px 30px;
             font-size: 24px;
             font-weight: bold;
-            border-top: 3px solid #ffcc00;
-            text-align: left;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            border-right: 5px solid #fff;
         }
-
-        .role-tag {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            color: #ffcc00;
-            padding: 2px 10px;
-            font-size: 16px;
-            border: 1px solid #ffcc00;
-        }
-
-        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-    <div class="grid-container">
-        <div class="guest-box">
-            <div class="role-tag">ANCHOR</div>
-            <iframe id="iframe1" src=""></iframe>
-            <div class="name-tag" id="n1">एंकर</div>
+    <div class="container">
+        <div class="video-box">
+            <iframe id="box1" src=""></iframe>
+            <div class="name-tag" id="t1">ANCHOR</div>
         </div>
-
-        <div class="guest-box">
-            <div class="role-tag">LIVE</div>
-            <iframe id="iframe2" src=""></iframe>
-            <div class="name-tag" id="n2">गेस्ट 1</div>
+        <div class="video-box">
+            <iframe id="box2" src=""></iframe>
+            <div class="name-tag" id="t2">GUEST 1</div>
         </div>
-
-        <div class="guest-box">
-            <div class="role-tag">LIVE</div>
-            <iframe id="iframe3" src=""></iframe>
-            <div class="name-tag" id="n3">गेस्ट 2</div>
+        <div class="video-box">
+            <iframe id="box3" src=""></iframe>
+            <div class="name-tag" id="t3">GUEST 2</div>
         </div>
-
-        <div class="guest-box">
-            <div class="role-tag">LIVE</div>
-            <iframe id="iframe4" src=""></iframe>
-            <div class="name-tag" id="n4">गेस्ट 3</div>
+        <div class="video-box">
+            <iframe id="box4" src=""></iframe>
+            <div class="name-tag" id="t4">GUEST 3</div>
         </div>
     </div>
 
     <script>
-        // URL से जानकारी लेना: ?n1=Rahul&n2=NetaJi...
+        // URL से नाम और Room की जानकारी लेना
         const params = new URLSearchParams(window.location.search);
-        const room = "ApkaNewsChannel"; // अपना रूम नाम यहाँ लिखें
-        const pw = "Live123";
+        const room = "ApkaNewsChannel"; // आपका Room Name
+        const pw = "Live123"; // आपका Password
 
-        // नाम सेट करना
-        if(params.get('n1')) document.getElementById('n1').innerText = params.get('n1');
-        if(params.get('n2')) document.getElementById('n2').innerText = params.get('n2');
-        if(params.get('n3')) document.getElementById('n3').innerText = params.get('n3');
-        if(params.get('n4')) document.getElementById('n4').innerText = params.get('n4');
+        // सबको उनके बॉक्स में फिट करना
+        function setupBox(id, streamID, defaultName) {
+            const name = params.get(id) || defaultName;
+            document.getElementById('t' + id.slice(1)).innerText = name;
+            // VDO.Ninja का लिंक ऑटो-जेनरेट करना
+            document.getElementById('box' + id.slice(1)).src = `https://vdo.ninja/?view=${streamID}&room=${room}&pw=${pw}&autoplay&cleanoutput&transparent`;
+        }
 
-        // VDO.Ninja वीडियो लोड करना (View Links)
-        document.getElementById('iframe1').src = `https://vdo.ninja/?view=anchor&room=${room}&pw=${pw}&cleanoutput`;
-        document.getElementById('iframe2').src = `https://vdo.ninja/?view=guest1&room=${room}&pw=${pw}&cleanoutput`;
-        document.getElementById('iframe3').src = `https://vdo.ninja/?view=guest2&room=${room}&pw=${pw}&cleanoutput`;
-        document.getElementById('iframe4').src = `https://vdo.ninja/?view=guest3&room=${room}&pw=${pw}&cleanoutput`;
+        setupBox('n1', 'n1', 'ANCHOR');
+        setupBox('n2', 'n2', 'NETA JI');
+        setupBox('n3', 'n3', 'OFFICER');
+        setupBox('n4', 'n4', 'GUEST');
     </script>
 </body>
 </html>
