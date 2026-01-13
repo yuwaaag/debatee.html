@@ -2,62 +2,45 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>PTN NEWS FINAL SETUP</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+        body, html { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+        .container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 100%; height: 100%; gap: 10px; padding: 10px; box-sizing: border-box; }
+        .video-box { position: relative; background: #111; border: 4px solid #fff; overflow: hidden; border-radius: 10px; }
         
-        .container { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            grid-template-rows: 1fr 1fr; 
-            width: 1920px; height: 1080px; 
-            gap: 12px; padding: 12px; box-sizing: border-box; 
-        }
-
-        .video-box { 
-            position: relative; background: #000; border: 4px solid #ffffff; 
-            overflow: hidden; border-radius: 10px; 
-        }
-
-        /* यही वो जादुई सेटिंग है जो वीडियो को फिट करेगी */
+        /* वीडियो को ग्रिड में जबरदस्ती फिट करने की सेटिंग */
         iframe { 
-            width: 100%; height: 100%; border: none; 
+            width: 100% !important; 
+            height: 100% !important; 
+            border: none; 
             object-fit: cover !important; 
         }
 
         .name-tag {
-            position: absolute; bottom: 25px; left: 0;
+            position: absolute; bottom: 20px; left: 0;
             background: #cc0000; color: white;
-            padding: 10px 35px; font-size: 26px; font-weight: bold;
-            font-family: sans-serif; border-right: 5px solid #fff; z-index: 10;
+            padding: 8px 30px; font-size: 24px; font-weight: bold;
+            border-right: 5px solid #fff; z-index: 10;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <div class="video-box"><iframe id="f1" allow="autoplay; camera; microphone;"></iframe><div class="name-tag" id="n1">ANCHOR</div></div>
-        <div class="video-box"><iframe id="f2" allow="autoplay; camera; microphone;"></iframe><div class="name-tag" id="n2">GUEST 1</div></div>
-        <div class="video-box"><iframe id="f3" allow="autoplay; camera; microphone;"></iframe><div class="name-tag" id="n3">GUEST 2</div></div>
-        <div class="video-box"><iframe id="f4" allow="autoplay; camera; microphone;"></iframe><div class="name-tag" id="n4">GUEST 3</div></div>
+        <div class="video-box"><iframe id="f1" allow="autoplay"></iframe><div class="name-tag" id="n1">ANCHOR</div></div>
+        <div class="video-box"><iframe id="f2" allow="autoplay"></iframe><div class="name-tag" id="n2">GUEST 1</div></div>
+        <div class="video-box"><iframe id="f3" allow="autoplay"></iframe><div class="name-tag" id="n3">GUEST 2</div></div>
+        <div class="video-box"><iframe id="f4" allow="autoplay"></iframe><div class="name-tag" id="n4">GUEST 3</div></div>
     </div>
-
     <script>
         const room = "PTN_FINAL_TEST"; 
-
         function setBox(id, streamID, defaultName) {
             const params = new URLSearchParams(window.location.search);
             document.getElementById('n' + id).innerText = params.get('n' + id) || defaultName;
             
-            // यहाँ हमने &cover=1 जोड़ा है ताकि वीडियो खिड़की में फिट रहे
-            const url = `https://vdo.ninja/?view=${streamID}&room=${room}&autoplay=1&autostart=1&cleanoutput=1&transparent=1&cover=1`;
+            // यह जादुई लिंक है: इसमें autostart, cover, और mutespeaker सब फिक्स है
+            const url = `https://vdo.ninja/?view=${streamID}&room=${room}&autoplay=1&autostart=1&cover=1&cleanoutput=1&transparent=1&videodevice=0&audiodevice=0`;
             document.getElementById('f' + id).src = url;
         }
-
-        setBox('1', 'n1', 'ANCHOR');
-        setBox('2', 'n2', 'NETA JI');
-        setBox('3', 'n3', 'OFFICER');
-        setBox('4', 'n4', 'GUEST');
+        setBox('1', 'n1', 'ANCHOR'); setBox('2', 'n2', 'NETA JI'); setBox('3', 'n3', 'OFFICER'); setBox('4', 'n4', 'GUEST');
     </script>
 </body>
 </html>
