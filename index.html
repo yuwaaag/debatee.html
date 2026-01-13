@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body, html { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; font-family: sans-serif; }
-        .container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 1920px; height: 1080px; gap: 10px; padding: 10px; box-sizing: border-box; }
-        .video-box { position: relative; background: #000; border: 4px solid #fff; overflow: hidden; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        body, html { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+        .container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 100%; height: 100%; gap: 15px; padding: 15px; box-sizing: border-box; }
         
-        /* Force Video to Fill the Box */
-        iframe { width: 100%; height: 100%; border: none; object-fit: cover; }
+        .video-box { 
+            position: relative; background: #000; border: 4px solid #fff; 
+            overflow: hidden; border-radius: 12px;
+        }
+
+        /* ज़ूम और फिटिंग के लिए खास सेटिंग */
+        iframe { 
+            width: 100%; height: 100%; border: none; 
+            transform: scale(1.1); /* हल्का सा ज़ूम ताकि किनारे न दिखें */
+            object-fit: cover; 
+        }
 
         .name-tag {
-            position: absolute; bottom: 20px; left: 0;
+            position: absolute; bottom: 30px; left: 0;
             background: #cc0000; color: white;
-            padding: 8px 30px; font-size: 24px; font-weight: bold;
-            border-right: 5px solid #fff; z-index: 10;
+            padding: 10px 40px; font-size: 26px; font-weight: bold;
+            border-right: 5px solid #fff; z-index: 100;
         }
     </style>
 </head>
@@ -30,8 +38,8 @@
         function setBox(id, streamID, defaultName) {
             const params = new URLSearchParams(window.location.search);
             document.getElementById('n' + id).innerText = params.get('n' + id) || defaultName;
-            // Added &cover &scale=100 for better fitting
-            const url = `https://vdo.ninja/?view=${streamID}&room=${room}&autoplay&cleanoutput&transparent&cover&scale=100`;
+            // &cover=1 और &zoom=1.2 लगाने से वीडियो पूरा फैल जाएगा
+            const url = `https://vdo.ninja/?view=${streamID}&room=${room}&autoplay&cleanoutput&transparent&cover=1&zoom=1.2`;
             document.getElementById('f' + id).src = url;
         }
         setBox('1', 'n1', 'ANCHOR'); setBox('2', 'n2', 'NETA JI'); setBox('3', 'n3', 'OFFICER'); setBox('4', 'n4', 'GUEST');
