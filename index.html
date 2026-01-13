@@ -3,41 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <style>
+        /* पूरे स्क्रीन को 1920x1080 पर सेट करना */
         body, html { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
-        .container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 1920px; height: 1080px; gap: 10px; padding: 10px; box-sizing: border-box; }
-        .video-box { position: relative; background: #000; border: 4px solid #fff; overflow: hidden; border-radius: 10px; }
         
-        /* वीडियो को ग्रिड के हिसाब से खींचने (Stretch) के लिए */
-        iframe { 
-            width: 100%; height: 100%; border: none; 
-            object-fit: fill !important; 
+        /* 4 Windows का ग्रिड सेटअप */
+        .container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            grid-template-rows: 1fr 1fr; 
+            width: 1920px; 
+            height: 1080px; 
+            gap: 15px; 
+            padding: 15px; 
+            box-sizing: border-box; 
         }
 
+        .video-box { 
+            position: relative; 
+            background: #111; 
+            border: 5px solid #ffffff; 
+            overflow: hidden; 
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        /* वीडियो को DSLR की तरह फिट करने की असली सेटिंग */
+        iframe { 
+            width: 100% !important; 
+            height: 100% !important; 
+            border: none; 
+            display: block;
+            /* 'cover' वीडियो को किनारों से काटकर पूरे डिब्बे में भर देगा */
+            object-fit: cover !important; 
+        }
+
+        /* नाम की पट्टी (Name Plate) */
         .name-tag {
-            position: absolute; bottom: 20px; left: 0;
-            background: #cc0000; color: white;
-            padding: 8px 30px; font-size: 24px; font-weight: bold;
-            border-right: 5px solid #fff; z-index: 10;
+            position: absolute; 
+            bottom: 30px; 
+            left: 0;
+            background: linear-gradient(90deg, #d90000, #800000); 
+            color: white;
+            padding: 10px 45px; 
+            font-size: 30px; 
+            font-weight: bold;
+            font-family: sans-serif;
+            border-right: 6px solid #fff; 
+            z-index: 99;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="video-box"><iframe id="f1"></iframe><div class="name-tag" id="n1">ANCHOR</div></div>
-        <div class="video-box"><iframe id="f2"></iframe><div class="name-tag" id="n2">NETA JI</div></div>
-        <div class="video-box"><iframe id="f3"></iframe><div class="name-tag" id="n3">OFFICER</div></div>
-        <div class="video-box"><iframe id="f4"></iframe><div class="name-tag" id="n4">GUEST</div></div>
+        <div class="video-box">
+            <iframe id="f1" allow="autoplay; camera; microphone; fullscreen;"></iframe>
+            <div class="name-tag" id="n1">ANCHOR</div>
+        </div>
+        <div class="video-box">
+            <iframe id="f2" allow="autoplay; camera; microphone; fullscreen;"></iframe>
+            <div class="name-tag" id="n2">GUEST 1</div>
+        </div>
+        <div class="video-box">
+            <iframe id="f3" allow="autoplay; camera; microphone; fullscreen;"></iframe>
+            <div class="name-tag" id="n3">GUEST 2</div>
+        </div>
+        <div class="video-box">
+            <iframe id="f4" allow="autoplay; camera; microphone; fullscreen;"></iframe>
+            <div class="name-tag" id="n4">GUEST 3</div>
+        </div>
     </div>
+
     <script>
+        // आपका रूम का नाम
         const room = "PTN_FINAL_TEST"; 
+
         function setBox(id, streamID, defaultName) {
             const params = new URLSearchParams(window.location.search);
-            document.getElementById('n' + id).innerText = params.get('n' + id) || defaultName;
-            // &cover=1 और &autostart वीडियो को ऑटोमेटिक शुरू और फिट करेंगे
-            const url = `https://vdo.ninja/?view=${streamID}&room=${room}&autoplay&cleanoutput&transparent&cover=1&autostart=1`;
+            const name = params.get('n' + id) || defaultName;
+            document.getElementById('n' + id).innerText = name;
+            
+            // &cover=1 और &autostart=1 से वीडियो खुद शुरू होगा और फिट होगा
+            const url = `https://vdo.ninja/?view=${streamID}&room=${room}&autoplay=1&autostart=1&cleanoutput=1&transparent=1&cover=1&buffer=200`;
             document.getElementById('f' + id).src = url;
         }
-        setBox('1', 'n1', 'ANCHOR'); setBox('2', 'n2', 'NETA JI'); setBox('3', 'n3', 'OFFICER'); setBox('4', 'n4', 'GUEST');
+
+        // चारों विंडोज़ को एक्टिवेट करना
+        setBox('1', 'n1', 'ANCHOR');
+        setBox('2', 'n2', 'NETA JI');
+        setBox('3', 'n3', 'OFFICER');
+        setBox('4', 'n4', 'GUEST');
     </script>
 </body>
 </html>
