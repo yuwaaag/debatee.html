@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body, html { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+        body, html { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
         .container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 100%; height: 100%; gap: 10px; padding: 10px; box-sizing: border-box; }
-        .video-box { position: relative; background: #000; border: 4px solid #fff; overflow: hidden; border-radius: 10px; }
+        .video-box { position: relative; background: #111; border: 4px solid #fff; overflow: hidden; border-radius: 10px; }
         
-        /* वीडियो को पूरी तरह ग्रिड में खींचने (Stretch) के लिए जादुई सेटिंग */
+        /* वीडियो को ग्रिड में जबरदस्ती फिट करने की सेटिंग */
         iframe { 
             width: 100% !important; 
             height: 100% !important; 
             border: none; 
-            position: absolute;
-            top: 0;
-            left: 0;
-            /* यह वीडियो को बिना काला हिस्सा छोड़े पूरा भर देगा */
             object-fit: cover !important; 
         }
 
@@ -29,10 +25,10 @@
 </head>
 <body>
     <div class="container">
-        <div class="video-box"><iframe id="f1"></iframe><div class="name-tag" id="n1">ANCHOR</div></div>
-        <div class="video-box"><iframe id="f2"></iframe><div class="name-tag" id="n2">GUEST 1</div></div>
-        <div class="video-box"><iframe id="f3"></iframe><div class="name-tag" id="n3">GUEST 2</div></div>
-        <div class="video-box"><iframe id="f4"></iframe><div class="name-tag" id="n4">GUEST 3</div></div>
+        <div class="video-box"><iframe id="f1" allow="autoplay"></iframe><div class="name-tag" id="n1">ANCHOR</div></div>
+        <div class="video-box"><iframe id="f2" allow="autoplay"></iframe><div class="name-tag" id="n2">GUEST 1</div></div>
+        <div class="video-box"><iframe id="f3" allow="autoplay"></iframe><div class="name-tag" id="n3">GUEST 2</div></div>
+        <div class="video-box"><iframe id="f4" allow="autoplay"></iframe><div class="name-tag" id="n4">GUEST 3</div></div>
     </div>
     <script>
         const room = "PTN_FINAL_TEST"; 
@@ -40,8 +36,8 @@
             const params = new URLSearchParams(window.location.search);
             document.getElementById('n' + id).innerText = params.get('n' + id) || defaultName;
             
-            // इसमें &cover=1 सबसे ज़रूरी है फिटिंग के लिए
-            const url = `https://vdo.ninja/?view=${streamID}&room=${room}&autoplay=1&autostart=1&cover=1&cleanoutput=1&transparent=1`;
+            // यह जादुई लिंक है: इसमें autostart, cover, और mutespeaker सब फिक्स है
+            const url = `https://vdo.ninja/?view=${streamID}&room=${room}&autoplay=1&autostart=1&cover=1&cleanoutput=1&transparent=1&videodevice=0&audiodevice=0`;
             document.getElementById('f' + id).src = url;
         }
         setBox('1', 'n1', 'ANCHOR'); setBox('2', 'n2', 'NETA JI'); setBox('3', 'n3', 'OFFICER'); setBox('4', 'n4', 'GUEST');
